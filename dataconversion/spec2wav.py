@@ -14,7 +14,7 @@ def phase_restore(mag, random_phase, restore_iter):
 	init_shape = np.shape(p)
 
 	for i in range(restore_iter):
-		_, p = librosa.magphase(librosa.stft(librosa.istft(mag * p), n_fft=2046))
+		_, p = librosa.magphase(librosa.stft(librosa.istft(mag * p), n_fft=254))
 
 	return p
 
@@ -51,7 +51,7 @@ def main():
 	args = vars(parser.parse_args())
 	
 	if args['source'] == None:
-		args['source'] = './output/spectrograms/sec=8_sr=22050_crop=True'
+		args['source'] = './output/dummydata/sec=5_sr=22050_crop=True'
 
 	pos = [i for i, ltr in enumerate(args['source']) if ltr == '/'][-1]
 	if args['destination'] == None:

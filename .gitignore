@@ -1,3 +1,4 @@
 \.vscode/
 *.pyc
 /datasets
+/StarGAN/stargan

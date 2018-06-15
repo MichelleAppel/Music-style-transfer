@@ -50,8 +50,8 @@ if __name__ == '__main__':
 
     # Training configuration.
     parser.add_argument('--batch_size', type=int, default=1, help='mini-batch size') # was 16
-    parser.add_argument('--num_iters', type=int, default=40000, help='number of total iterations for training D') # was 200000
-    parser.add_argument('--num_iters_decay', type=int, default=20000, help='number of iterations for decaying lr') # was 100000
+    parser.add_argument('--num_iters', type=int, default=200000, help='number of total iterations for training D') # was 200000
+    parser.add_argument('--num_iters_decay', type=int, default=100000, help='number of iterations for decaying lr') # was 100000
     parser.add_argument('--g_lr', type=float, default=0.001, help='learning rate for G') # was 0.0001
     parser.add_argument('--d_lr', type=float, default=0.001, help='learning rate for D') # was 0.0001
     parser.add_argument('--n_critic', type=int, default=5, help='number of D updates per each G update')
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     parser.add_argument('--resume_iters', type=int, default=None, help='resume training from this step')
     parser.add_argument('--selected_attrs', '--list', nargs='+', help='selected attributes for the dataset', default=None)
     # Test configuration.
-    parser.add_argument('--test_iters', type=int, default=10, help='test model from this step') # was 200000 
+    parser.add_argument('--test_iters', type=int, default=200000, help='test model from this step') # was 200000 
 
     # Miscellaneous.
     parser.add_argument('--split', type=float, default=0.8, help='split training and test set')
