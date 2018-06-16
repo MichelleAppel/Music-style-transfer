@@ -289,6 +289,7 @@ class Solver(object):
                     os.mkdir(sample_path)
                 
                 with torch.no_grad():
+                    x_fake_list = [x_fixed]
                     result_shape = x_fixed.shape[-2:]
                     x_original = np.array(x_fixed).reshape(result_shape)
                     spectrogram_list = [x_original]
@@ -296,13 +297,19 @@ class Solver(object):
 
                     for j, c_fixed in enumerate(c_fixed_list):
                         generated = self.G(x_fixed, c_fixed)
+                        x_fake_list.append(generated)
                         spectrogram = np.array(generated).reshape(result_shape)
                         np.save(sample_path+'/'+str(j), spectrogram)
+
+                    x_concat = torch.cat(x_fake_list, dim=3)
+                    save_image(self.denorm(x_concat.data.cpu()), sample_path+'/visual.jpg', nrow=1, padding=0)
 
                     print('Saved real and fake spectrograms into {}...'.format(sample_path))
 
                 del x_original
                 del c_fixed
+                del x_fake_list
+                del x_concat
 
             # Save model checkpoints.
             if (i + 1) % self.model_save_step == 0:
@@ -362,19 +369,24 @@ class Solver(object):
                 x_real = x_real.to(self.device)
                 c_trg_list = self.create_labels(c_org, self.c_dim, self.selected_attrs)
 
+                x_fake_list = [x_real]
+
                 # Reshape tensor to np array
                 result_shape = x_real.shape[-2:]
                 x_original = np.array(x_real).reshape(result_shape)
 
                 # Save original file
-                np.save(result_dir+'/'+destination+'/'+str(i)+'/'+'original', x_original)
+                np.save(result_dir+'/'+destination+'/'+str(i)+'/original', x_original)
                 
                 # Save translations
                 for c_trg in c_trg_list:
                     generated = self.G(x_real, c_trg)
+                    x_fake_list.append(generated)
                     spectrogram = np.array(generated).reshape(result_shape)
                     np.save(result_dir+'/'+destination+'/'+str(i)+'/'+str(int(np.squeeze(np.array(c_trg)).nonzero()[0])), spectrogram)
                     
+                x_concat = torch.cat(x_fake_list, dim=3)
+                save_image(self.denorm(x_concat.data.cpu()), result_dir+'/'+destination+'/'+str(i)+'/visual.jpg', nrow=1, padding=0)
                 print('Saved real and fake spectrograms into {}...'.format(result_dir))
 
                 del generated
