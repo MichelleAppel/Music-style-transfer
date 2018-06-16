@@ -284,17 +284,25 @@ class Solver(object):
 
             # Translate fixed spectrograms for debugging.
             if (i + 1) % self.sample_step == 0:
+                sample_path = os.path.join(self.sample_dir, '{}-spectrograms'.format(i + 1))
+                if not os.path.exists(sample_path):
+                    os.mkdir(sample_path)
+                
                 with torch.no_grad():
-                    x_fake_list = [x_fixed]
-                    for c_fixed in c_fixed_list:
-                        x_fake_list.append(self.G(x_fixed, c_fixed))
-                    x_concat = torch.cat(x_fake_list, dim=3)
-                    sample_path = os.path.join(self.sample_dir, '{}-spectrograms.jpg'.format(i + 1))
-                    save_image(self.denorm(x_concat.data.cpu()), sample_path, nrow=1, padding=0)
+                    result_shape = x_fixed.shape[-2:]
+                    x_original = np.array(x_fixed).reshape(result_shape)
+                    spectrogram_list = [x_original]
+                    np.save(sample_path+'/original', x_original)
+
+                    for j, c_fixed in enumerate(c_fixed_list):
+                        generated = self.G(x_fixed, c_fixed)
+                        spectrogram = np.array(generated).reshape(result_shape)
+                        np.save(sample_path+'/'+str(j), spectrogram)
+
                     print('Saved real and fake spectrograms into {}...'.format(sample_path))
-                del x_fake_list
+
+                del x_original
                 del c_fixed
-                del x_concat
 
             # Save model checkpoints.
             if (i + 1) % self.model_save_step == 0:
@@ -350,7 +358,6 @@ class Solver(object):
                 if not os.path.exists(result_dir+'/'+destination+'/'+str(i)):
                     os.mkdir(result_dir+'/'+destination+'/'+str(i))
 
-
                 # Prepare input spectrograms and target domain labels.
                 x_real = x_real.to(self.device)
                 c_trg_list = self.create_labels(c_org, self.c_dim, self.selected_attrs)
@@ -369,3 +376,5 @@ class Solver(object):
                     np.save(result_dir+'/'+destination+'/'+str(i)+'/'+str(int(np.squeeze(np.array(c_trg)).nonzero()[0])), spectrogram)
                     
                 print('Saved real and fake spectrograms into {}...'.format(result_dir))
+
+                del generated
