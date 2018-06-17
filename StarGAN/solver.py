@@ -291,7 +291,6 @@ class Solver(object):
                 with torch.no_grad():
                     x_fake_list = [x_fixed]
                     result_shape = x_fixed.shape[-2:]
-                    print('S H A P E', x_fixed[0].shape)
                     x_original = np.array(x_fixed[0]).reshape(result_shape)
                     spectrogram_list = [x_original]
                     np.save(sample_path+'/original', x_original)

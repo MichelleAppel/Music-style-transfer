@@ -6,7 +6,7 @@ import pickle
 import numpy as np
 import scipy
 
-SAMPLE_RATE = 21050
+SAMPLE_RATE = 22050
 RESTORE_ITER = 50 # 50 iterations -> takes ~ 5-10s per file
 
 def phase_restore(mag, random_phase, restore_iter):
@@ -14,7 +14,7 @@ def phase_restore(mag, random_phase, restore_iter):
 	init_shape = np.shape(p)
 
 	for i in range(restore_iter):
-		_, p = librosa.magphase(librosa.stft(librosa.istft(mag * p), n_fft=254))
+		_, p = librosa.magphase(librosa.stft(librosa.istft(mag * p), n_fft=2046))
 
 	return p
 
@@ -37,11 +37,12 @@ def dir2wavs(source, destination, restore_iter):
 	for genre in os.listdir(source):
 		if genre != '.DS_Store': # for Mac (hidden file)
 			for filename in os.listdir(source+'/'+genre):
-				spectrogram = np.load(source+'/'+genre+'/'+filename)
-				reconstructed_wav = spec2wav(spectrogram, restore_iter=restore_iter)
-				if not os.path.exists(destination+'/'+genre):
-					os.mkdir(destination+'/'+genre)
-				save_wav(reconstructed_wav, destination+'/'+genre+'/'+filename, sample_rate=SAMPLE_RATE)
+				if filename.endswith('.npy'):
+					spectrogram = np.load(source+'/'+genre+'/'+filename)
+					reconstructed_wav = spec2wav(spectrogram, restore_iter=restore_iter)
+					if not os.path.exists(destination+'/'+genre):
+						os.mkdir(destination+'/'+genre)
+					save_wav(reconstructed_wav, destination+'/'+genre+'/'+filename, sample_rate=SAMPLE_RATE)
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-s', '--source', default=None, required=False)
