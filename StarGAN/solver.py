@@ -291,14 +291,15 @@ class Solver(object):
                 with torch.no_grad():
                     x_fake_list = [x_fixed]
                     result_shape = x_fixed.shape[-2:]
-                    x_original = np.array(x_fixed).reshape(result_shape)
+                    print('S H A P E', x_fixed[0].shape)
+                    x_original = np.array(x_fixed[0]).reshape(result_shape)
                     spectrogram_list = [x_original]
                     np.save(sample_path+'/original', x_original)
 
                     for j, c_fixed in enumerate(c_fixed_list):
                         generated = self.G(x_fixed, c_fixed)
                         x_fake_list.append(generated)
-                        spectrogram = np.array(generated).reshape(result_shape)
+                        spectrogram = np.array(generated[0]).reshape(result_shape)
                         np.save(sample_path+'/'+str(j), spectrogram)
 
                     x_concat = torch.cat(x_fake_list, dim=3)
