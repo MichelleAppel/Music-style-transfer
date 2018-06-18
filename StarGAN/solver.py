@@ -297,7 +297,8 @@ class Solver(object):
                         generated = self.G(x_fixed, c_fixed)
                         x_fake_list.append(generated)
                         spectrogram = generated[0].cpu().numpy().reshape(result_shape)
-                        np.save(sample_path + '/' + str(c_fixed), (spectrogram + 1) / 2)
+                        np.save(sample_path + '/' + str(
+                            int(np.squeeze(np.array(c_trg)).nonzero()[0])), (spectrogram + 1) / 2)
 
                     x_concat = torch.cat(x_fake_list, dim=3)
                     save_image(self.denorm(x_concat.data.cpu()), sample_path + '/visual.jpg', nrow=1, padding=0)
