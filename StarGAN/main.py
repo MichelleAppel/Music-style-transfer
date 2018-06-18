@@ -67,7 +67,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_workers', type=int, default=0) # was 1
     parser.add_argument('--mode', type=str, default='train', choices=['train', 'test'])
     parser.add_argument('--use_tensorboard', type=str2bool, default=False)
-    parser.add_argument('--force_cpu', type=str2bool, default=False)
+    parser.add_argument('--force_cpu', action='store_true')
 
     # Directories.
     parser.add_argument('--data_dir', type=str, default='data/')
