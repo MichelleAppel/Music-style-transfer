@@ -24,7 +24,7 @@ class ResidualBlock2(nn.Module):
     """Residual Block with instance normalization."""
 
     def __init__(self, dim_in, dim_out):
-        super(ResidualBlock, self).__init__()
+        super(ResidualBlock2, self).__init__()
         self.main = nn.Sequential(
             nn.Conv2d(dim_in, dim_out, kernel_size=(1, 3), stride=1, padding=(0, 1), bias=False),
             nn.InstanceNorm2d(dim_out, affine=True, track_running_stats=True),
