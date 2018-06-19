@@ -74,11 +74,11 @@ if __name__ == '__main__':
     parser.add_argument('--force_cpu', action='store_true')
 
     # Directories.
-    parser.add_argument('--data_dir', type=str, default='data/')
-    parser.add_argument('--log_dir', type=str, default='stargan/logs')
-    parser.add_argument('--model_save_dir', type=str, default='stargan/models')
-    parser.add_argument('--sample_dir', type=str, default='stargan/samples')
-    parser.add_argument('--result_dir', type=str, default='stargan/results')
+    parser.add_argument('--data_dir', type=str, default='./data/')
+    parser.add_argument('--log_dir', type=str, default='./stargan/logs')
+    parser.add_argument('--model_save_dir', type=str, default='./stargan/models')
+    parser.add_argument('--sample_dir', type=str, default='./stargan/samples')
+    parser.add_argument('--result_dir', type=str, default='./stargan/results')
 
     # Step size.
     parser.add_argument('--log_step', type=int, default=10)
