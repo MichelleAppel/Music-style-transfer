@@ -40,7 +40,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # Model configuration.
-    parser.add_argument('--g_model', default=1, choices=[1, 2, 3], help='choose generator model')
+    parser.add_argument('--g_model', type=int, default=1, choices=[1, 2, 3], help='choose generator model')
     parser.add_argument(
         '--g_conv_dim', type=int, default=64, help='number of conv filters in the first layer of G')  # Was 64
     parser.add_argument(
