@@ -23,7 +23,7 @@ for innermap in os.listdir(source):
                 sound.export(destination + "/" + genre + "/" + genre + "_" + str(counter) + ".wav", format="wav")
                 counter += 1
             except:
-                print("\nPress Enter to remove: " + audio_file)
+                print("\nPress Enter to remove: " + innermap + "/" + audio_file)
                 input("Press Ctrl+C to quit!")
                 os.remove(source + "/" + innermap + "/" + audio_file)
                 print("file is removed and the algorithm keeps on running...")
