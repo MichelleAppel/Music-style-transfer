@@ -1,4 +1,4 @@
-from model import Generator
+from model import Generator, Generator2, Generator3
 from model import Discriminator
 from torch.autograd import Variable
 from torchvision.utils import save_image
@@ -21,6 +21,7 @@ class Solver(object):
         self.data_loader = data_loader
 
         # Model configurations.
+        self.g_model = config.g_model
         self.data_size = data_size
         self.c_dim = c_dim
         self.g_conv_dim = config.g_conv_dim
@@ -70,7 +71,13 @@ class Solver(object):
 
     def build_model(self):
         """Create a generator and a discriminator."""
-        self.G = Generator(self.g_conv_dim, self.c_dim, self.g_repeat_num)
+        if self.g_model == 2:
+            self.G = Generator2(self.c_dim)
+        elif self.g_model == 3:
+            self.G = Generator3(self.g_conv_dim, self.c_dim, self.g_repeat_num)
+        else:
+            self.G = Generator(self.g_conv_dim, self.c_dim, self.g_repeat_num)
+
         self.D = Discriminator(self.data_size, self.d_conv_dim, self.c_dim, self.d_repeat_num)
 
         self.g_optimizer = torch.optim.Adam(self.G.parameters(), self.g_lr, [self.beta1, self.beta2])
@@ -207,7 +214,6 @@ class Solver(object):
             # Compute loss with real spectrograms.
             out_src, out_cls = self.D(x_real)
             d_loss_real = -torch.mean(out_src)
-            # label_org = label_org.type(torch.LongTensor)
             d_loss_cls = self.classification_loss(out_cls, label_org)
 
             # Compute loss with fake spectrograms.
