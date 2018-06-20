@@ -41,14 +41,16 @@ def dir2specs(source, destination, time_sec=10, sample_rate=22050, crop=True, nu
 				cropped_spectrograms = []
 				if crop:
 					for spectrogram in spectrograms:
+						# print(spectrogram.shape)
 						cr_spectrogram = crop_data(spectrogram)
+						# print(cr_spectrogram.shape)
 						cropped_spectrograms.append(cr_spectrogram)
 
 				if not os.path.exists(destination+'/'+genre):
 					os.mkdir(destination+'/'+genre)
 				counter = 0
 				for spectrogram in cropped_spectrograms:
-					print(str(int(counter)))
+					# print(str(int(counter)))
 					spec2pickle(spectrogram, destination+'/'+genre+'/'+filename[:-3]+'_interval'+str(int(counter))+'npy')
 					counter += 1
 
