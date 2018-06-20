@@ -2,5 +2,6 @@
 *.pyc
 /datasets
 /StarGAN/stargan
+/music-genre-classification/saved_models
 /music-genre-classification/data-files
 /music-genre-classification/df_features.csv
