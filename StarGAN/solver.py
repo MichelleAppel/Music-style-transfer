@@ -375,7 +375,7 @@ class Solver(object):
 
                 # Reshape tensor to np array
                 result_shape = x_real.shape[-2:]
-                x_original = np.array(x_real).reshape(result_shape)
+                x_original = np.array(x_real[0]).reshape(result_shape)
 
                 # Save original file
                 np.save(result_dir + '/' + destination + '/' + str(i) + '/original', x_original)
@@ -384,10 +384,9 @@ class Solver(object):
                 for c_trg in c_trg_list:
                     generated = self.G(x_real, c_trg)
                     x_fake_list.append(generated)
-                    spectrogram = np.array(generated).reshape(result_shape)
+                    spectrogram = np.array(generated[0]).reshape(result_shape)
                     np.save(
-                        result_dir + '/' + destination + '/' + str(i) + '/' + str(
-                            int(np.squeeze(np.array(c_trg)).nonzero()[0])), spectrogram)
+                        result_dir + '/' + destination + '/' + str(i) + '/' + str(int(np.squeeze(np.array(c_trg[0])).nonzero()[0])), spectrogram)
 
                 x_concat = torch.cat(x_fake_list, dim=3)
                 save_image(
