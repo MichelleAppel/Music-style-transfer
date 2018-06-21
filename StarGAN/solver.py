@@ -77,6 +77,8 @@ class Solver(object):
             self.G = Generator3(self.g_conv_dim, self.c_dim, self.g_repeat_num)
         else:
             self.G = Generator(self.g_conv_dim, self.c_dim, self.g_repeat_num)
+        
+        
 
         self.D = Discriminator(self.data_size, self.d_conv_dim, self.c_dim, self.d_repeat_num)
 
