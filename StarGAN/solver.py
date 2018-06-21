@@ -166,7 +166,7 @@ class Solver(object):
         data_iter = iter(self.data_loader)
         x_fixed, c_org = next(data_iter)
         result_shape = x_fixed.shape[-2:]
-        np.save(self.sample_dir + '/original', self.denorm(x_fixed[0]).numpy()).reshape(result_shape))
+        np.save(self.sample_dir + '/original', self.denorm(x_fixed[0]).numpy().reshape(result_shape))
         x_fixed = x_fixed.to(self.device)
         c_fixed_list = self.create_labels(c_org, self.c_dim, self.selected_attrs)
 
