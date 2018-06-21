@@ -35,8 +35,8 @@ class DataSet(data.Dataset):
             attr_dir = os.path.join(self.data_dir, attr_name)
             dataset = [(os.path.join(attr_dir, filename), attr_name) for filename in os.listdir(attr_dir)]
 
-            # random.seed(1234)
-            # random.shuffle(dataset)
+			random.seed(1234)
+			random.shuffle(dataset)
 
             split = int(len(dataset) * split_percentage)
             self.train_dataset.extend(dataset[:split])

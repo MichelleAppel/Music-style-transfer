@@ -167,7 +167,7 @@ class Solver(object):
         np.save(
             os.path.join(self.sample_dir,
                          data_iter.dataset.idx2attr[c_org.numpy()[0]] + '_' + x_fixed_name[0] + '_original'),
-            (x_fixed[0].numpy().reshape(result_shape) + 1) / 2)
+            self.denorm(x_fixed[0]).numpy().reshape(result_shape))
         x_fixed = x_fixed.to(self.device)
         c_fixed_list = self.create_labels(c_org, self.c_dim, self.selected_attrs)
 
@@ -305,12 +305,12 @@ class Solver(object):
                     for j, c_fixed in enumerate(c_fixed_list):
                         generated = self.G(x_fixed, c_fixed)
                         x_fake_list.append(generated)
-                        spectrogram = generated[0].cpu().numpy().reshape(result_shape)
+                        spectrogram = self.denorm(generated[0].cpu()).numpy().reshape(result_shape)
                         np.save(
                             os.path.join(
                                 sample_path,
                                 data_iter.dataset.idx2attr[np.argmax(c_fixed.numpy()[0])] + '_' + x_fixed_name[0]),
-                            (spectrogram + 1) / 2)
+                            spectrogram)
 
                     x_concat = torch.cat(x_fake_list, dim=3)
                     save_image(self.denorm(x_concat.data.cpu()), sample_path + '/visual.jpg', nrow=1, padding=0)
@@ -382,7 +382,7 @@ class Solver(object):
 
                 # Reshape tensor to np array
                 result_shape = x_real.shape[-2:]
-                x_original = np.array(x_real[0]).reshape(result_shape)
+                x_original = np.array(self.denorm(x_real[0])).reshape(result_shape)
 
                 # Save original file
                 np.save(result_dir + '/' + destination + '/' + str(i) + '/original', x_original)
@@ -391,7 +391,7 @@ class Solver(object):
                 for c_trg in c_trg_list:
                     generated = self.G(x_real, c_trg)
                     x_fake_list.append(generated)
-                    spectrogram = np.array(generated[0]).reshape(result_shape)
+                    spectrogram = np.array(self.denorm(generated[0])).reshape(result_shape)
                     np.save(
                         result_dir + '/' + destination + '/' + str(i) + '/' + str(
                             int(np.squeeze(np.array(c_trg[0])).nonzero()[0])), spectrogram)
