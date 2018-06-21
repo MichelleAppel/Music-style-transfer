@@ -145,7 +145,6 @@ class Generator3(nn.Module):
         x = torch.cat([x, c], dim=1)
         return self.main(x)
 
-
 class Discriminator(nn.Module):
     """Discriminator network with PatchGAN."""
 

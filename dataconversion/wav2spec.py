@@ -19,7 +19,8 @@ def wav2spec(wav, time_sec=10, sample_rate=22050, num_intervals=1):
 		return [spectrogram]
 	else: # Choose amount of intervals
 		rest = np.shape(wav)[0] % num_intervals
-		wav = wav[:-rest]
+		if rest != 0:
+			wav = wav[:-rest]
 		wavs = np.array_split(wav, num_intervals)
 		spectrograms = []
 		for wav in wavs:
