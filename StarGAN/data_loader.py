@@ -44,18 +44,17 @@ class DataSet(data.Dataset):
 
 		print('Finished preprocessing the dataset...')
 
-    def __getitem__(self, index):
-        """Return one spectrogram and its corresponding attribute label."""
-        dataset = self.train_dataset if self.mode == 'train' else self.test_dataset
-        filepath, label = dataset[index]
-        norm = Normalize(mean=[0.5], std=[0.5])
-	    spectrogram = norm(torch.from_numpy(np.load(filepath)).unsqueeze(0))
-        # spectrogram = spectrogram[:, :2**math.floor(math.log(width, 2))]
-        return spectrogram, self.attr2idx[label]
+	def __getitem__(self, index):
+		"""Return one spectrogram and its corresponding attribute label."""
+		dataset = self.train_dataset if self.mode == 'train' else self.test_dataset
+		filepath, label = dataset[index]
+		norm = Normalize(mean=[0.5], std=[0.5])
+		spectrogram = norm(torch.from_numpy(np.load(filepath)).unsqueeze(0))
+		return spectrogram, self.attr2idx[label]
 
-    def __len__(self):
-        """Return the number of files."""
-        return self.length
+	def __len__(self):
+		"""Return the number of files."""
+		return self.length
 
 
 def get_loader(data_dir, selected_attrs, split=0.8, batch_size=16, mode='train', num_workers=1):
