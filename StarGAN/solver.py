@@ -77,8 +77,6 @@ class Solver(object):
             self.G = Generator3(self.g_conv_dim, self.c_dim, self.g_repeat_num)
         else:
             self.G = Generator(self.g_conv_dim, self.c_dim, self.g_repeat_num)
-        
-        
 
         self.D = Discriminator(self.data_size, self.d_conv_dim, self.c_dim, self.d_repeat_num)
 
@@ -164,9 +162,12 @@ class Solver(object):
         """Train StarGAN within a single dataset."""
         # Fetch fixed inputs for debugging.
         data_iter = iter(self.data_loader)
-        x_fixed, c_org = next(data_iter)
+        x_fixed, c_org, x_fixed_name = next(data_iter)
         result_shape = x_fixed.shape[-2:]
-        np.save(self.sample_dir + '/original', (x_fixed[0].numpy().reshape(result_shape) + 1) / 2)
+        np.save(
+            os.path.join(self.sample_dir,
+                         data_iter.dataset.idx2attr[c_org.numpy()[0]] + '_' + x_fixed_name[0] + '_original'),
+            (x_fixed[0].numpy().reshape(result_shape) + 1) / 2)
         x_fixed = x_fixed.to(self.device)
         c_fixed_list = self.create_labels(c_org, self.c_dim, self.selected_attrs)
 
@@ -191,10 +192,10 @@ class Solver(object):
 
             # Fetch real spectograms and labels.
             try:
-                x_real, label_org = next(data_iter)
+                x_real, label_org, x_name = next(data_iter)
             except:
                 data_iter = iter(self.data_loader)
-                x_real, label_org = next(data_iter)
+                x_real, label_org, x_name = next(data_iter)
 
             # Generate target domain labels randomly.
             rand_idx = torch.randperm(label_org.size(0))
@@ -305,7 +306,11 @@ class Solver(object):
                         generated = self.G(x_fixed, c_fixed)
                         x_fake_list.append(generated)
                         spectrogram = generated[0].cpu().numpy().reshape(result_shape)
-                        np.save(sample_path + '/' + str(int(np.squeeze(np.array(c_fixed[0])).nonzero()[0])), (spectrogram + 1) / 2)
+                        np.save(
+                            os.path.join(
+                                sample_path,
+                                data_iter.dataset.idx2attr[np.argmax(c_fixed.numpy()[0])] + '_' + x_fixed_name[0]),
+                            (spectrogram + 1) / 2)
 
                     x_concat = torch.cat(x_fake_list, dim=3)
                     save_image(self.denorm(x_concat.data.cpu()), sample_path + '/visual.jpg', nrow=1, padding=0)
@@ -388,7 +393,8 @@ class Solver(object):
                     x_fake_list.append(generated)
                     spectrogram = np.array(generated[0]).reshape(result_shape)
                     np.save(
-                        result_dir + '/' + destination + '/' + str(i) + '/' + str(int(np.squeeze(np.array(c_trg[0])).nonzero()[0])), spectrogram)
+                        result_dir + '/' + destination + '/' + str(i) + '/' + str(
+                            int(np.squeeze(np.array(c_trg[0])).nonzero()[0])), spectrogram)
 
                 x_concat = torch.cat(x_fake_list, dim=3)
                 save_image(
