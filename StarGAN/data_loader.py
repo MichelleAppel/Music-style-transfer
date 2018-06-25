@@ -48,8 +48,9 @@ class DataSet(data.Dataset):
         """Return one spectrogram and its corresponding attribute label."""
         dataset = self.train_dataset if self.mode == 'train' else self.test_dataset
         filepath, label = dataset[index]
-        norm = Normalize(mean=[0.5], std=[0.5])
-        spectrogram = norm(torch.from_numpy(np.load(filepath)).unsqueeze(0))
+        # norm = Normalize(mean=[0.5], std=[0.5])
+        # spectrogram = norm(torch.from_numpy(np.load(filepath)).unsqueeze(0))
+        spectrogram = torch.from_numpy(np.load(filepath)).unsqueeze(0)
         return spectrogram, self.attr2idx[label], os.path.basename(filepath)
 
     def __len__(self):
