@@ -124,8 +124,9 @@ class Solver(object):
 
     def denorm(self, x):
         """Convert the range from [-1, 1] to [0, 1]."""
-        out = (x + 1) / 2
-        return out.clamp_(0, 1)
+        # out = (x + 1) / 2
+        # return out.clamp_(0, 1)
+        return x
 
     def gradient_penalty(self, y, x):
         """Compute gradient penalty: (L2_norm(dy/dx) - 1)**2."""
