@@ -309,9 +309,8 @@ class Solver(object):
                         spectrogram = self.denorm(generated[0].cpu()).numpy().reshape(result_shape)
                         np.save(
                             os.path.join(
-                                sample_path,
-                                data_iter.dataset.idx2attr[np.argmax(c_fixed.numpy()[0])] + '_' + x_fixed_name[0]),
-                            spectrogram)
+                                sample_path, data_iter.dataset.idx2attr[np.argmax(c_fixed.cpu().numpy()[0])] + '_' +
+                                x_fixed_name[0]), spectrogram)
 
                     x_concat = torch.cat(x_fake_list, dim=3)
                     save_image(self.denorm(x_concat.data.cpu()), sample_path + '/visual.jpg', nrow=1, padding=0)
