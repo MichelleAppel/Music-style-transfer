@@ -370,7 +370,7 @@ class Solver(object):
             if not os.path.exists(result_dir + '/' + destination):
                 os.mkdir(result_dir + '/' + destination)
 
-            for i, (x_real, c_org) in enumerate(data_loader):
+            for i, (x_real, c_org, name) in enumerate(data_loader):
                 if not os.path.exists(result_dir + '/' + destination + '/' + str(i)):
                     os.mkdir(result_dir + '/' + destination + '/' + str(i))
 
@@ -382,7 +382,7 @@ class Solver(object):
 
                 # Reshape tensor to np array
                 result_shape = x_real.shape[-2:]
-                x_original = np.array(self.denorm(x_real[0])).reshape(result_shape)
+                x_original = np.array(self.denorm(x_real[0].cpu())).reshape(result_shape)
 
                 # Save original file
                 np.save(result_dir + '/' + destination + '/' + str(i) + '/original', x_original)
