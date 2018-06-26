@@ -43,7 +43,7 @@ class Generator(nn.Module):
         super(Generator, self).__init__()
 
         layers = []
-        layers.append(nn.Conv2d(1 + c_dim, conv_dim, kernel_size=70, stride=10, padding=30, bias=False))
+        layers.append(nn.Conv2d(1 + c_dim, conv_dim, kernel_size=69, stride=1, padding=34, bias=False))
         layers.append(nn.InstanceNorm2d(conv_dim, affine=True, track_running_stats=True))
         layers.append(nn.SELU(inplace=True))  # Was ReLU
 
