@@ -50,7 +50,7 @@ class Generator(nn.Module):
         # Down-sampling layers.
         curr_dim = conv_dim
         for i in range(2):
-            layers.append(nn.Conv2d(curr_dim, curr_dim * 2, kernel_size=4, stride=2, padding=1, bias=False))
+            layers.append(nn.Conv2d(curr_dim, curr_dim * 2, kernel_size=21, stride=2, padding=10, bias=False))
             layers.append(nn.InstanceNorm2d(curr_dim * 2, affine=True, track_running_stats=True))
             layers.append(nn.SELU(inplace=True))  # Was ReLU
             curr_dim = curr_dim * 2
