@@ -43,14 +43,14 @@ class Generator(nn.Module):
         super(Generator, self).__init__()
 
         layers = []
-        layers.append(nn.Conv2d(1 + c_dim, conv_dim, kernel_size=69, stride=1, padding=34, bias=False))
+        layers.append(nn.Conv2d(1 + c_dim, conv_dim, kernel_size=21, stride=1, padding=10, bias=False))
         layers.append(nn.InstanceNorm2d(conv_dim, affine=True, track_running_stats=True))
         layers.append(nn.SELU(inplace=True))  # Was ReLU
 
         # Down-sampling layers.
         curr_dim = conv_dim
         for i in range(2):
-            layers.append(nn.Conv2d(curr_dim, curr_dim * 2, kernel_size=21, stride=2, padding=10, bias=False))
+            layers.append(nn.Conv2d(curr_dim, curr_dim * 2, kernel_size=4, stride=2, padding=1, bias=False))
             layers.append(nn.InstanceNorm2d(curr_dim * 2, affine=True, track_running_stats=True))
             layers.append(nn.SELU(inplace=True))  # Was ReLU
             curr_dim = curr_dim * 2
