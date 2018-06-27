@@ -385,16 +385,22 @@ class Solver(object):
                 x_original = np.array(self.denorm(x_real[0].cpu())).reshape(result_shape)
 
                 # Save original file
-                np.save(result_dir + '/' + destination + '/' + str(i) + '/original', x_original)
+                # np.save(result_dir + '/' + destination + '/' + str(i) + '/original', x_original)
+                np.save(
+                    os.path.join(result_dir, destination, str(i),
+                                 data_loader.dataset.idx2attr[c_org.numpy()[0]] + '_' + name + '_original'), x_original)
 
                 # Save translations
                 for c_trg in c_trg_list:
                     generated = self.G(x_real, c_trg)
                     x_fake_list.append(generated)
                     spectrogram = np.array(self.denorm(generated[0])).reshape(result_shape)
+                    # np.save(
+                    #     result_dir + '/' + destination + '/' + str(i) + '/' + str(
+                    #         int(np.squeeze(np.array(c_trg[0])).nonzero()[0])), spectrogram)
                     np.save(
-                        result_dir + '/' + destination + '/' + str(i) + '/' + str(
-                            int(np.squeeze(np.array(c_trg[0])).nonzero()[0])), spectrogram)
+                        os.path.join(result_dir, destination, str(i),
+                                     data_loader.dataset.idx2attr[int(np.squeeze(np.array(c_trg[0])).nonzero()[0]))] + '_' + name), spectrogram)
 
                 x_concat = torch.cat(x_fake_list, dim=3)
                 save_image(
