@@ -46,12 +46,13 @@ def transform_dataset(source, destination, color):
 			if color == 'gray':
 				scipy.misc.imsave(new_filename, spectrogram)
 			else:
-				h, w = np.shape(spectrogram)
-				rgb_spectrogram = np.zeros((h, w, 3), dtype=np.uint8)
-				rgb_spectrogram[..., 0] = spectrogram * 255 / np.max(spectrogram)
-				rgb_spectrogram[..., 1] = spectrogram * 255 / np.max(spectrogram)
-				rgb_spectrogram[..., 2] = spectrogram * 255 / np.max(spectrogram)
-				scipy.misc.imsave(new_filename, rgb_spectrogram)
+				if np.shape(spectrogram) != (216,):
+					h, w = np.shape(spectrogram)
+					rgb_spectrogram = np.zeros((h, w, 3), dtype=np.uint8)
+					rgb_spectrogram[..., 0] = spectrogram * 255 / np.max(spectrogram)
+					rgb_spectrogram[..., 1] = spectrogram * 255 / np.max(spectrogram)
+					rgb_spectrogram[..., 2] = spectrogram * 255 / np.max(spectrogram)
+					scipy.misc.imsave(new_filename, rgb_spectrogram)
 			file_counter += 1
 								
 def main():
