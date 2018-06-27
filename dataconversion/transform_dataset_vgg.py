@@ -28,10 +28,19 @@ def transform_dataset(source, destination, color):
 		shuffle(all_files)
 		num_files = len(all_files)
 		for file_count, filename in enumerate(all_files):
-								
+			
 			spectrogram = np.load(source+'/'+genre+'/'+filename)
-			idx = filename.find('_', 0)
-			file_id = filename[idx+1:-9]
+			spectrogram = spectrogram / np.max(spectrogram) # Normalize
+			
+			if "IRMAS" in source:
+				file_id = filename[:-4]
+			elif "NSynth" in source:
+				file_id = filename[:-4]
+				file_id = file_id.replace('.', '')
+			else:
+				idx = filename.find('_', 0)
+				file_id = filename[idx+1:-9]
+			
 			new_filename = destination+'/'+str(file_counter).zfill(4)+'_'+genre.lower()+'_'+file_id+'.jpg'
 			
 			if color == 'gray':
@@ -43,7 +52,6 @@ def transform_dataset(source, destination, color):
 				rgb_spectrogram[..., 1] = spectrogram * 255 / np.max(spectrogram)
 				rgb_spectrogram[..., 2] = spectrogram * 255 / np.max(spectrogram)
 				scipy.misc.imsave(new_filename, rgb_spectrogram)
-			
 			file_counter += 1
 								
 def main():
