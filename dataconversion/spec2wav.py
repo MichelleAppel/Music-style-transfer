@@ -34,20 +34,24 @@ def save_wav(spectrogram, filename, sample_rate):
 
 
 def dir2wavs(source, destination, restore_iter):
-    print(destination)
+    print('Destination:', destination)
     if not os.path.exists(destination):
         os.mkdir(destination)
-    for genre in os.listdir(source):
-        if genre != '.DS_Store':  # for Mac (hidden file)
-            for filename in os.listdir(source + '/' + genre):
-                if filename.endswith('.npy'):
-                    spectrogram = np.load(source + '/' + genre + '/' + filename)
-                    spectrogram = denoise(spectrogram)
+        
+    # retrieve all genre directory names (without hidden files)
+    all_genres = [f for f in os.listdir(source) if not f.startswith('.')]
+    for genre in all_genres:
+        # retrieve all file names (without hidden files)
+        all_files = [f for f in os.listdir(source+'/'+genre) if not f.startswith('.')]
+        for filename in all_files:
+            if filename.endswith('.npy'):
+                spectrogram = np.load(source + '/' + genre + '/' + filename)
+                spectrogram = denoise(spectrogram)
 
-                    reconstructed_wav = spec2wav(spectrogram, restore_iter=restore_iter)
-                    if not os.path.exists(destination + '/' + genre):
-                        os.mkdir(destination + '/' + genre)
-                    save_wav(reconstructed_wav, destination + '/' + genre + '/' + filename, sample_rate=SAMPLE_RATE)
+                reconstructed_wav = spec2wav(spectrogram, restore_iter=restore_iter)
+                if not os.path.exists(destination + '/' + genre):
+                    os.mkdir(destination + '/' + genre)
+                save_wav(reconstructed_wav, destination + '/' + genre + '/' + filename, sample_rate=SAMPLE_RATE)
 
 
 def denoise(input):
