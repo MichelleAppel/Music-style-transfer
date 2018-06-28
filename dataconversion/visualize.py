@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 def save_plot(source_path):
     pos_left = [i for i, ltr in enumerate(source_path) if ltr == '/'][-1]
     pos_right = [i for i, ltr in enumerate(source_path) if ltr == '.'][-1]
-    name = path[pos_left+1:pos_right]
+    name = source_path[pos_left+1:pos_right]
 
     sr = 22050
     S = np.load(source_path) # Possibility to save result
@@ -29,9 +29,9 @@ def save_plot(source_path):
     # Make the figure layout compact
     plt.tight_layout()
 
-    save_path = './output/figures/'+name
+    save_path = source_path+'_figure'
 
     plt.savefig(save_path + '.pdf')
     plt.savefig(save_path + '.png')
 
-save_plot(source_path = './output/spectrograms/sec=15_sr=22050_crop=True/reggae/reggae.00002.npy')
+save_plot(source_path = '~/Documents/trained/augmented/results/model_100000_dataset_augmented_data/0/jazz_jazz_00004_18-23_augm.npy_original.npy')
