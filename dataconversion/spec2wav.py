@@ -57,7 +57,7 @@ def dir2wavs(source, destination, restore_iter):
 def denoise(input):
     output = input.copy()
     output = output / output.max()
-    output = output[output < 0.05] = 0
+    output[output < 0.05] = 0
     return output
 
 
