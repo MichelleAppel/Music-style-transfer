@@ -390,7 +390,7 @@ class Solver(object):
                 # np.save(result_dir + '/' + destination + '/' + str(i) + '/original', x_original)
                 np.save(
                     os.path.join(result_dir, destination, str(i),
-                                 data_loader.dataset.idx2attr[c_org.numpy()[0]] + '_' + name + '_original'), x_original)
+                                 data_loader.dataset.idx2attr[c_org.numpy()[0]] + '_' + name[0] + '_original'), x_original)
 
                 # Save translations
                 for c_trg in c_trg_list:
@@ -402,7 +402,7 @@ class Solver(object):
                     #         int(np.squeeze(np.array(c_trg[0])).nonzero()[0])), spectrogram)
                     np.save(
                         os.path.join(result_dir, destination, str(i),
-                                     data_loader.dataset.idx2attr[int(np.squeeze(np.array(c_trg[0])).nonzero()[0]))] + '_' + name), spectrogram)
+                                     data_loader.dataset.idx2attr[int(np.squeeze(np.array(c_trg[0])).nonzero()[0])] + '_' + name[0]), spectrogram)
 
                 x_concat = torch.cat(x_fake_list, dim=3)
                 save_image(
