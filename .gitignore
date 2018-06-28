@@ -8,5 +8,5 @@
 /music-genre-classification/NSynth_three_vgg
 /music-genre-classification/IRMAS_three_vgg
 /music-genre-classification/three_genres_vgg
-dataconversion/output/spectrograms
-dataconversion/output/dummydata
+/dataconversion/output/spectrograms
+/dataconversion/output/dummydata
