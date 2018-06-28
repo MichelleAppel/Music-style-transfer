@@ -46,19 +46,11 @@ def dir2wavs(source, destination, restore_iter):
         for filename in all_files:
             if filename.endswith('.npy'):
                 spectrogram = np.load(source + '/' + genre + '/' + filename)
-                spectrogram = denoise(spectrogram)
 
                 reconstructed_wav = spec2wav(spectrogram, restore_iter=restore_iter)
                 if not os.path.exists(destination + '/' + genre):
                     os.mkdir(destination + '/' + genre)
                 save_wav(reconstructed_wav, destination + '/' + genre + '/' + filename, sample_rate=SAMPLE_RATE)
-
-
-def denoise(input):
-    output = input.copy()
-    output = output / output.max()
-    output[output < 0.05] = 0
-    return output
 
 
 def main():

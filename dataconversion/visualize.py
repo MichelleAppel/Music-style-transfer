@@ -1,3 +1,4 @@
+import os
 import sys
 import numpy as np
 import librosa
@@ -10,7 +11,7 @@ def save_plot(source_path):
     name = source_path[pos_left+1:pos_right]
 
     sr = 22050
-    S = np.load(source_path) # Possibility to save result
+    S = np.load(os.path.join(source_path)) # Possibility to save result
 
 
     # Make a new figure
@@ -24,14 +25,14 @@ def save_plot(source_path):
     plt.title('Fourier spectrogram ' + name)
 
     # draw a color bar
-    plt.colorbar(format='%+02.0f dB')
+    plt.colorbar(format='%+01.0f dB')
 
     # Make the figure layout compact
     plt.tight_layout()
 
-    save_path = source_path+'_figure'
+    save_path = os.path.join(source_path+'_figure')
 
     plt.savefig(save_path + '.pdf')
     plt.savefig(save_path + '.png')
 
-save_plot(source_path = '~/Documents/trained/augmented/results/model_100000_dataset_augmented_data/0/jazz_jazz_00004_18-23_augm.npy_original.npy')
+save_plot(source_path = '/home/michelle/Documents/Music-style-transfer/dataconversion/output/jazz_jazz_00004_18-23_augm.npy')
