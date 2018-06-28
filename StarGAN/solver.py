@@ -1,4 +1,4 @@
-from model import Generator, Generator2, Generator3
+from model import Generator, Generator2, Generator3, Generator4
 from model import Discriminator
 from torch.autograd import Variable
 from torchvision.utils import save_image
@@ -75,6 +75,8 @@ class Solver(object):
             self.G = Generator2(self.c_dim)
         elif self.g_model == 3:
             self.G = Generator3(self.g_conv_dim, self.c_dim, self.g_repeat_num)
+        elif self.g_model == 4:
+            self.G = Generator4(self.g_conv_dim, self.c_dim, self.g_repeat_num)
         else:
             self.G = Generator(self.g_conv_dim, self.c_dim, self.g_repeat_num)
 
